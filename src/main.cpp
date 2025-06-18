@@ -1,28 +1,41 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <../headers/animation.h>
+#include <../headers/collider.h>
+#include <../headers/player.h>
+#include <../headers/platform.h>
 // #include <TGUI/TGUI.hpp>
+
+static float VIEW_HEIGHT = 512.0f;
 
 int main()
 {
     // window
-    sf::RenderWindow window(sf::VideoMode(512, 512), "SFML-window", sf::Style::Close);
+    sf::RenderWindow window(sf::VideoMode(512, 512), "SFML-window", sf::Style::Close | sf::Style::Resize);
 
-    // player
-    sf::RectangleShape player(sf::Vector2f(100.0f, 100.0f));
-    player.setFillColor(sf::Color::White);
+    // View
+    sf::View view(sf::Vector2f(0.0f, 0.0f), sf::Vector2f(VIEW_HEIGHT, VIEW_HEIGHT));
 
-    // player texture
-    sf::Texture playerTexture;
-    if (!playerTexture.loadFromFile("assets/pokemon.png"))
+    // player-section
+    sf::RectangleShape square(sf::Vector2f(100.0f, 100.0f));
+    sf::Texture pokemon;
+    if (!pokemon.loadFromFile("assets/pokemon.png"))
         return -1;
-    player.setTexture(&playerTexture);
+    square.setTexture(&pokemon);
 
-    // player animation
-    Animation animation(&playerTexture, sf::Vector2u(4, 4), 0.3f);
+    Player player(square);
+    player.setAnimation(new Animation(&pokemon, sf::Vector2u(4, 4), 0.3f));
+    player.setCollider(new Collider(player.body));
+
+    // platform section
+    sf::RectangleShape sqr(sf::Vector2f(100.0f, 100.0f));
+    sqr.setFillColor(sf::Color::White);
+    sqr.setPosition(sf::Vector2f(250.0f, 250.0f));
+    Platform platform1(sqr);
+    platform1.setCollider(new Collider(platform1.body));
+
     float deltaTime = 0.0f;
     sf::Clock clock;
-
     // run gameloop
     while (window.isOpen())
     {
@@ -34,33 +47,25 @@ int main()
             {
                 window.close();
             }
-        }
-        // keyboard input processing
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
-        {
-            animation.update(1, deltaTime);
-            player.move(-0.1f, 0.0f);
-        }
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
-        {
-            animation.update(2, deltaTime);
-            player.move(0.05f, 0.0);
-        }
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up))
-        {
-            animation.update(3, deltaTime);
-            player.move(0.0, -0.05f);
-        }
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down))
-        {
-            animation.update(0, deltaTime);
-            player.move(0.0, 0.05f);
+            if (_event.type == _event.Closed)
+            {
+                float aspectRatio = (float)window.getSize().x / (float)window.getSize().y; // of window
+                view.setSize(VIEW_HEIGHT * aspectRatio, VIEW_HEIGHT);
+            }
         }
 
-        player.setTextureRect(animation.uvRect); // choose texture of input movement
+        player.update(deltaTime);
+
+        // collision processing
+        platform1.collider->checkCollision(player.collider, 0.01f);
+
+        player.body.setTextureRect(player.animation->uvRect); // choose texture of input movement
+        // view.setCenter(player.body.getPosition());
 
         window.clear();
-        window.draw(player);
+        // window.setView(view);
+        window.draw(player.body);
+        window.draw(platform1.body);
         window.display();
     }
     return 0;
@@ -159,6 +164,9 @@ player.setTextureRect(fullSize.x,fullSize.y,partialSize.x,partialSize.y);
 ------------------------------------------------------------------------------------------
 7.) Animation:
 
+8.) View: is a 2D camera.
+
+9.) Collision
 
 
 */
