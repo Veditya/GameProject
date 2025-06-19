@@ -1,47 +1,35 @@
-
 #include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>
-#include <imgui.h>
-#include <imgui-SFML.h>
+// #include <imgui-SFML.h>
+// #include <imgui.h>
+// #include <iostream>
+// using namespace std;
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(800, 600), "ImGui + SFML Example");
-    window.setFramerateLimit(60);
+    sf::RenderWindow window(sf::VideoMode(720.0f, 720.0f), "sfml window", sf::Style::Close | sf::Style::Default);
+    // window.setFramerateLimit(60);
 
-    ImGui::SFML::Init(window);
+    // ImGui::SFML::Init(window);
 
-    sf::Clock deltaClock;
-    bool show_demo = true;
-    float my_float = 0.0f;
+    // sf::Clock deltaClock;
 
     while (window.isOpen())
     {
-        sf::Event event;
-        while (window.pollEvent(event))
+        sf::Event evnt;
+        while (window.pollEvent(evnt))
         {
-            ImGui::SFML::ProcessEvent(event);
-
-            if (event.type == sf::Event::Closed)
+            // ImGui::SFML::ProcessEvent(evnt);
+            if (evnt.type == sf::Event::Closed)
+            {
                 window.close();
+            }
         }
-
-        ImGui::SFML::Update(window, deltaClock.restart());
-
-        ImGui::Begin("Hello, Debugger");
-        ImGui::Text("This is ImGui running inside SFML!");
-        ImGui::Checkbox("Show ImGui Demo", &show_demo);
-        ImGui::SliderFloat("My Float", &my_float, 0.0f, 1.0f);
-        ImGui::End();
-
-        if (show_demo)
-            ImGui::ShowDemoWindow();
+        // ImGui::SFML::Update(window, deltaClock.restart());
 
         window.clear(sf::Color(30, 30, 30));
-        ImGui::SFML::Render(window);
+        // ImGui::SFML::Render(window);
         window.display();
     }
-
-    ImGui::SFML::Shutdown();
+    // ImGui::SFML::Shutdown(window);
     return 0;
 }
