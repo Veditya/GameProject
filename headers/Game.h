@@ -1,6 +1,7 @@
 #ifndef GAME_H
 #define GAME_H
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "EntityManager.h"
 #include "Entity.h"
 #include <memory>
@@ -13,11 +14,15 @@ private:
     EntityManager entityManager; //
     Random<int> randInt;
     Random<float> randFloat;
-    sf::Font font;   //
-    sf::Text text;   //
-    sf::Clock clock; //
-
-    std::shared_ptr<Entity> player; //
+    sf::Font font;               //
+    sf::Text text;               //
+    sf::Clock clock;             //
+    sf::Music bgm;               //
+    sf::SoundBuffer crackBuffer; //
+    sf::Sound crackSound;
+    sf::SoundBuffer playerLostSoundBuffer; //
+    sf::Sound playerLostSound;             //
+    std::shared_ptr<Entity> player;        //
 
     int score = 0;
     int currFrame = 0;

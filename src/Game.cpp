@@ -15,6 +15,35 @@ Game::Game()
         return;
     }
 
+    if (!crackBuffer.loadFromFile("assets/enemyKilled.wav"))
+    {
+        std::cout << "crack sound could not be loaded" << std::endl;
+        isRunning = false; // Prevent the game loop from running
+        return;
+    }
+    crackSound.setBuffer(crackBuffer);
+    crackSound.setVolume(100.0f); // Set volume to 100%
+    if (!playerLostSoundBuffer.loadFromFile("assets/playerLost.wav"))
+    {
+        std::cout << "player lost sound could not be loaded" << std::endl;
+        isRunning = false; // Prevent the game loop from running
+        return;
+    }
+    if (!bgm.openFromFile("assets/DBZ.wav"))
+    {
+        std::cout << "BGM could not be loaded" << std::endl;
+        isRunning = false; // Prevent the game loop from running
+        return;
+    }
+    else
+    {
+        bgm.setLoop(true);     // Loop the background music
+        bgm.setVolume(100.0f); // Set volume to 50%
+        bgm.play();            // Start playing the background music
+    }
+    playerLostSound.setBuffer(playerLostSoundBuffer);
+    playerLostSound.setVolume(100.0f); // Set volume to 100%
+
     text.setFont(font);          // Set the loaded font
     text.setString("Score : 0"); // Set the string
     text.setCharacterSize(24);   // In pixels, not points!
@@ -33,6 +62,10 @@ void Game::run()
 
     while (isRunning)
     {
+        if (isPaused)
+        {
+            bgm.pause();
+        }
         text.setString("Score : " + std::to_string(score));
         float deltaTime = clock.restart().asSeconds();
         entityManager.update();
@@ -147,6 +180,7 @@ void Game::sCollision()
                     sf::Vector2f location = sf::Vector2f(ex, ey);
                     sf::Color color = enemy->shape->body.getFillColor();
                     enemy->destroy();
+                    crackSound.play(); // play sound on collision
                     score++;
                     spawnSmallEnemies(location, sides, er, color);
                 }
@@ -170,6 +204,7 @@ void Game::sCollision()
                 // collision happened
                 sf::Color color = player->shape->body.getFillColor();
                 player->destroy();
+                playerLostSound.play(); // play sound on collision
                 sf::Vector2f pos(px, py);
                 spawnSmallEnemies(pos, 8, pr, color);
                 score = 0;

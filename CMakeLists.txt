@@ -55,6 +55,7 @@ target_link_libraries(GameProject
     sfml-graphics
     sfml-window
     sfml-system
+    sfml-audio
     OpenGL::GL
 )
 
