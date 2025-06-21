@@ -5,14 +5,14 @@
             "name": "Launch Game",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/bin/SFML_TGUI_Game.exe",
+            "program": "${workspaceFolder}/build/bin/GameProject.exe",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/build",
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
-            "miDebuggerPath": "C:/mingw-w64/bin/gdb.exe",
+            "miDebuggerPath": "C:/MinGW/bin/gdb.exe",
             "setupCommands": [
                 {
                     "description": "Enable pretty-printing",

@@ -1,21 +1,21 @@
 cmake_minimum_required(VERSION 3.17)
 project(GameProject)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Define source files
 file(GLOB_RECURSE SOURCES
     src/*.cpp
     headers/*.h
-    external/imgui-1.88/imgui.cpp
-    external/imgui-1.88/imgui_draw.cpp
-    external/imgui-1.88/imgui_widgets.cpp
-    external/imgui-1.88/imgui_tables.cpp
+    #external/imgui-1.88/imgui.cpp
+    #external/imgui-1.88/imgui_draw.cpp
+    #external/imgui-1.88/imgui_widgets.cpp
+    #external/imgui-1.88/imgui_tables.cpp
     #external/imgui-1.88/backends/imgui_impl_sdl.cpp
     #external/imgui-1.88/backends/imgui_impl_opengl3.cpp
-    external/imgui-sfml-2.5/imgui-SFML.cpp
-    external/imgui-1.88/imgui_demo.cpp
+    #external/imgui-sfml-2.5/imgui-SFML.cpp
+    #external/imgui-1.88/imgui_demo.cpp
     
 )
 
